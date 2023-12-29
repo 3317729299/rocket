@@ -16,6 +16,7 @@ public class RocketApplication {
 
         SpringApplication.run(RocketApplication.class, args);
        log.info("******舞台已搭建，请开始你的表演******");
+        log.info("*创建master*");
     }
 
 
