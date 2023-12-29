@@ -9,7 +9,7 @@
 
     <CustomLevels>
         <!--注意 ： intLevel 值越小，级别越高 （log4j2 官方文档）-->
-        <CustomLevel name="CUSTOMER" intLevel="50" />
+        <CustomLevel name="CUSTOMER" intLevel="20" />
     </CustomLevels>
     <Appenders>
         <!--控制台输出-->
@@ -140,6 +140,11 @@
         <!--可以指定具体的类的log,输出到某个文件-->
         <Logger name="com.seif.flumesink.FlumesinkApplication" level="trace" additivity="false">
             <AppenderRef ref="InfoFile"/>
+        </Logger>
+
+        <!--可以指定具体的类的log,输出到某个文件-->
+        <Logger name="com.xinjian.rocket.demo.controller.HandleData" level="CUSTOMER" additivity="false">
+            <AppenderRef ref="RollingFileCustomerFile"/>
         </Logger>
         <Root level="trace">
             <AppenderRef ref="Console" />
