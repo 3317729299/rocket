@@ -116,7 +116,7 @@
                 <ThresholdFilter level="CUSTOMER" onMatch="ACCEPT" onMismatch="DENY" />
             </Filters>
 
-            <PatternLayout pattern=" - %msg%n" />
+            <PatternLayout pattern=" %d{yyyy-MM-dd HH:mm:ss.SSS}  - %msg%n" />
             <Policies>
                 <TimeBasedTriggeringPolicy interval="1" />
                 <SizeBasedTriggeringPolicy size="10 MB" />

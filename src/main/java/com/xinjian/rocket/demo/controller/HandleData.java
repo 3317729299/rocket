@@ -69,6 +69,7 @@ public class HandleData {
         //192.168.1.63:30100
         producer.start();
 
+
         Message message = new Message("userInfo", accountId, "KEY", json.getBytes(StandardCharsets.UTF_8));
 
         logself.log(Level.getLevel("CUSTOMER"),json);
