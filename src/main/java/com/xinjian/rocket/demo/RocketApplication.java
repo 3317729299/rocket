@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class RocketApplication {
     private static Logger log = LoggerFactory.getLogger("RocketApplication");
 
+
 //    public static void main(String[] args) {
 //        SpringApplication.run(RocketApplication.class, args);
 //    }

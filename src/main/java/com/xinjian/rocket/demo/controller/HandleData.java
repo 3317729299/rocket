@@ -2,18 +2,21 @@ package com.xinjian.rocket.demo.controller;
 
 import com.google.gson.Gson;
 import com.xinjian.rocket.demo.entity.UserInfo;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.rocketmq.client.exception.MQBrokerException;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.remoting.exception.RemotingException;
+
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.RequestParam;
-//import org.springframework.web.bind.annotation.RestController;
+
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -22,6 +25,17 @@ import java.util.List;
 @RestController
 //http://localhost:8080/click?ip=123&gender=0&age=22&username=tanrundong&location=yunnan&accountId=9990395
 public class HandleData {
+   // private static Logger log = LoggerFactory.getLogger("HandleData");
+
+    private Logger log = LogManager.getLogger(HandleData.class.getName());
+
+
+
+
+
+
+
+
     @RequestMapping("/click")
     public void click(@RequestParam("ip") String ip,
                       @RequestParam("gender") String gender,
@@ -35,6 +49,11 @@ public class HandleData {
         UserInfo userInfo = new UserInfo(ip, gender, age, username, location, accountId);
         users.add(new UserInfo(ip, gender, age, username, location, accountId));
         //写入文件
+        log.log(Level.getLevel("INITLEVEL"), "初始化日志输出测试");
+        log.error("******舞台已搭建，请开始你的表演 HandleData******");
+        log.error("*创建master HandleData*");
+
+
         // 创建一个Gson对象
         Gson gson = new Gson();
         // 将Java对象转换为JSON字符串

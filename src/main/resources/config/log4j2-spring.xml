@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn" monitorInterval="300">
+    <!--文件输出地址-->
+    <properties>
+        <property name="LOG_HOME">D:/testlog</property>
+    </properties>
+    <Appenders>
+        <!--控制台输出-->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+        </Console>
+
+
+        <!--  ACCEPT（放行）、DENY（拒绝）、NEUTRAL（不做任何操作)        -->
+        <!--  onMatch  >= level  onMatch指的是日志级别大于等于level时的操作      -->
+        <!--  onMismatch < levle onMismatch表示日志级别小于level时的操作,         -->
+        <!--  log 级别  off>fatal>error>warn>info>debug>trace>all,                            -->
+        <!--   通过添加两组 ThresholdFilter  可以达到一个级别的log一个文件的目的,-->
+
+        <!--info及以上级别输出-->
+        <RollingRandomAccessFile name="InfoFile"
+                                 fileName="${LOG_HOME}/info.log"
+                                 filePattern="${LOG_HOME}/info-%d{yyyy-MM-dd}-%i.log">
+            <Filters>
+                <!--<ThresholdFilter level="warn" onMatch="DENY" onMismatch="NEUTRAL"/>-->
+                <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout
+                    pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" />
+                <SizeBasedTriggeringPolicy size="10 MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="20" />
+        </RollingRandomAccessFile>
+        <!--warn及以上级别输出-->
+        <RollingRandomAccessFile name="warnFile"
+                                 fileName="${LOG_HOME}/warn.log"
+                                 filePattern="${LOG_HOME}/warn-%d{yyyy-MM-dd}-%i.log">
+            <Filters>
+                <!--<ThresholdFilter level="warn" onMatch="DENY" onMismatch="NEUTRAL"/>-->
+                <ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout
+                    pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+<!--            pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />-->
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" />
+                <SizeBasedTriggeringPolicy size="10 MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="20" />
+        </RollingRandomAccessFile>
+        <!--debug及以上级别输出-->
+        <RollingRandomAccessFile name="debugFile"
+                                 fileName="${LOG_HOME}/debug.log"
+                                 filePattern="${LOG_HOME}/debug-%d{yyyy-MM-dd}-%i.log">
+            <Filters>
+                <!--<ThresholdFilter level="warn" onMatch="DENY" onMismatch="NEUTRAL"/>-->
+                <ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout
+                    pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" />
+                <SizeBasedTriggeringPolicy size="10 MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="20" />
+        </RollingRandomAccessFile>
+        <!--error及以上级别输出-->
+        <RollingRandomAccessFile name="ErrorFile"
+                                 fileName="${LOG_HOME}/error.log"
+                                 filePattern="${LOG_HOME}/error-%d{yyyy-MM-dd}-%i.log">
+            <Filters>
+                <!--<ThresholdFilter level="fatal" onMatch="DENY" onMismatch="NEUTRAL" />-->
+                <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY" />
+            </Filters>
+            <PatternLayout
+                    pattern=" -%msg%n" />
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" />
+                <SizeBasedTriggeringPolicy size="10 MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="20" />
+        </RollingRandomAccessFile>
+        <!--fatal及以上级别输出-->
+        <RollingRandomAccessFile name="FatalFile"
+                                 fileName="${LOG_HOME}/fatal.log"
+                                 filePattern="${LOG_HOME}/$${date:yyyy-MM}/fatal-%d{yyyy-MM-dd HH-mm}-%i.log">
+<!--            filePattern="${LOG_HOME}/$${date:yyyy-MM}/fatal-%d{yyyy-MM-dd HH-mm}-%i.log">-->
+            <Filters>
+                <ThresholdFilter level="fatal" onMatch="ACCEPT" onMismatch="DENY" />
+            </Filters>
+            <PatternLayout
+                    pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" />
+                <SizeBasedTriggeringPolicy size="10 MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="20" />
+        </RollingRandomAccessFile>
+
+    </Appenders>
+    <!--将所有输出记录到下面-->
+    <Loggers>
+        <!--控制第三方log级别-->
+        <Logger name="RocketmqClient" level="warn"/>
+        <Logger name="RocketmqRemoting" level="warn"/>
+        <Logger name="org.apache.kafka" level="warn"/>
+        <Logger name=" com.alibaba.dubbo" level="warn"/>
+        <Logger name="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor" level="warn"/>
+        <Logger name="org.springframework.jmx.export.annotation.AnnotationMBeanExporter" level="warn"/>
+        <Logger name="org.springframework.context.annotation.AnnotationConfigApplicationContext" level="warn"/>
+        <Logger name="com.alibaba.druid.pool.DruidDataSource" level="warn"/>
+        <Logger name="org.springframework.data.repository.config.RepositoryConfigurationDelegate" level="warn"/>
+        <!--可以指定具体的类的log,输出到某个文件-->
+        <Logger name="com.seif.flumesink.FlumesinkApplication" level="trace" additivity="false">
+            <AppenderRef ref="InfoFile"/>
+        </Logger>
+        <Root level="trace">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="InfoFile" />
+            <AppenderRef ref="ErrorFile" />
+            <AppenderRef ref="FatalFile" />
+            <AppenderRef ref="warnFile" />
+            <AppenderRef ref="debugFile" />
+        </Root>
+    </Loggers>
+
+
+</Configuration>
