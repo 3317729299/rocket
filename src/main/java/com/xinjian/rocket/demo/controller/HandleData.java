@@ -30,6 +30,9 @@ public class HandleData {
     private Logger log = LogManager.getLogger(HandleData.class.getName());
 
 
+    private org.apache.logging.log4j.Logger logself= LogManager.getLogger(HandleData.class.getName());
+
+
 
 
 
@@ -48,10 +51,8 @@ public class HandleData {
         List<UserInfo> users = new ArrayList<UserInfo>();
         UserInfo userInfo = new UserInfo(ip, gender, age, username, location, accountId);
         users.add(new UserInfo(ip, gender, age, username, location, accountId));
-        //写入文件
-        log.log(Level.getLevel("INITLEVEL"), "初始化日志输出测试");
-        log.error("******舞台已搭建，请开始你的表演 HandleData******");
-        log.error("*创建master HandleData*");
+
+
 
 
         // 创建一个Gson对象
@@ -69,6 +70,8 @@ public class HandleData {
         producer.start();
 
         Message message = new Message("userInfo", accountId, "KEY", json.getBytes(StandardCharsets.UTF_8));
+
+        logself.log(Level.getLevel("CUSTOMER"),json);
         //发送消息
         SendResult result = producer.send(message,100000);
         //发送状态

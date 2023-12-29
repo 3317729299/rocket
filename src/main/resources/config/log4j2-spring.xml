@@ -1,16 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="warn" monitorInterval="300">
+
+
     <!--文件输出地址-->
     <properties>
         <property name="LOG_HOME">D:/testlog</property>
     </properties>
+
+    <CustomLevels>
+        <!--注意 ： intLevel 值越小，级别越高 （log4j2 官方文档）-->
+        <CustomLevel name="CUSTOMER" intLevel="50" />
+    </CustomLevels>
     <Appenders>
         <!--控制台输出-->
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
         </Console>
 
-
+<!--        <CustomLevels>-->
+<!--            &lt;!&ndash;注意 ： intLevel 值越小，级别越高 （log4j2 官方文档）&ndash;&gt;-->
+<!--            <CustomLevel name="customer" intLevel="1000" />-->
+<!--        </CustomLevels>-->
         <!--  ACCEPT（放行）、DENY（拒绝）、NEUTRAL（不做任何操作)        -->
         <!--  onMatch  >= level  onMatch指的是日志级别大于等于level时的操作      -->
         <!--  onMismatch < levle onMismatch表示日志级别小于level时的操作,         -->
@@ -99,6 +109,21 @@
             <DefaultRolloverStrategy max="20" />
         </RollingRandomAccessFile>
 
+
+        <RollingRandomAccessFile name="RollingFileCustomerFile" fileName="${LOG_HOME}/RollingFileCustomer.log"
+                     filePattern="${LOG_HOME}/RollingFileCustomer-%d{yyyy-MM-dd}-%i.log">
+            <Filters>
+                <ThresholdFilter level="CUSTOMER" onMatch="ACCEPT" onMismatch="DENY" />
+            </Filters>
+
+            <PatternLayout pattern=" - %msg%n" />
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" />
+                <SizeBasedTriggeringPolicy size="10 MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="20" />
+        </RollingRandomAccessFile>
+
     </Appenders>
     <!--将所有输出记录到下面-->
     <Loggers>
@@ -123,8 +148,16 @@
             <AppenderRef ref="FatalFile" />
             <AppenderRef ref="warnFile" />
             <AppenderRef ref="debugFile" />
+            <AppenderRef ref="RollingFileCustomerFile" />
         </Root>
     </Loggers>
 
 
+
+
+
+
+
 </Configuration>
+
+
